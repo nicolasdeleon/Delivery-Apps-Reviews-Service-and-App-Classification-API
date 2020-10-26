@@ -6,6 +6,6 @@
 
 - Download tokenizer from [link](https://drive.google.com/file/d/14fA8h_LwWwkRf2h8SC6jGZf7_L--9FOu/view?usp=sharing)
 
-- Un zip both folders in main directory
+- Unzip both folders in main directory
 
 - Entry point src/api
