@@ -30,5 +30,4 @@ if __name__ == "__main__":
         cat='Service'
     )
     MODEL.model_ramp_up()
-    APP.run()
-
+    APP.run(debug=True, host='0.0.0.0', port=5000)
