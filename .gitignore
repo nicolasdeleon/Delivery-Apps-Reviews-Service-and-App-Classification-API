@@ -1,5 +1,6 @@
 /binary*
-/models*
+/models/*
+model.bin
 tokenizer*
 **env
 **__pycache__

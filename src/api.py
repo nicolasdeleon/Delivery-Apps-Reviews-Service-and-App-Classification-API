@@ -23,7 +23,7 @@ def predict():
 if __name__ == "__main__":
     MODEL = ModelInterface(
         model_bin=os.path.join(
-            os.path.abspath('models'), 'model.bin'
+            os.path.abspath('models'), 'models.bin'
         ),
         device='cpu',
         tokenizer_state=os.path.abspath('tokenizer_state'),
