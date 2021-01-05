@@ -3,21 +3,21 @@ import transformers
 from torch import nn
 
 
-class BianryModelInterface:
+class ModelInterface:
     """Binary classification model
      interface for review 'intent' classification"""
 
-    def __init__(self, model_bin, device, tokenizer_state, cat):
+    def __init__(self, model_bin, device, tokenizer_state):
         """Uses base BETO model"""
         self.model = ReviewClassifier(
-            n_classes=1,
+            n_classes=4,
             pre_trained_model='dccuchile/bert-base-spanish-wwm-cased'
         )
         self.model_bin = model_bin
         self.device = device
         self.tokenizer = transformers.BertTokenizer\
             .from_pretrained(tokenizer_state)
-        self.classes = [f'Not {cat}', cat]
+        self.classes = ['Other', 'Service', 'App', 'App and Service']
 
     def model_ramp_up(self):
         """This loads the model to the cpu or the device. Takes time"""
@@ -50,12 +50,16 @@ class BianryModelInterface:
             .to(torch.device(self.device))
 
         output = self.model(input_ids, attention_mask)
-        prediction = torch.round(output)
+        _, prediction = torch.max(output, dim=1)
         return {
             'input': txt,
-            'positive_score': output.tolist()[0][0],
-            'negative_score': 1 - output.tolist()[0][0],
-            'category': self.classes[int(prediction.tolist()[0][0])]
+            'prediction': self.classes[prediction],
+            'prediction values': {
+                'other': output.tolist()[0][0],
+                'service': output.tolist()[0][1],
+                'app': output.tolist()[0][2],
+                'app and service': output.tolist()[0][3]
+            }
         }
 
 
@@ -66,7 +70,6 @@ class ReviewClassifier(nn.Module):
         self.bert = transformers.BertModel.from_pretrained(pre_trained_model)
         self.drop = nn.Dropout(p=0.3)
         self.out = nn.Linear(self.bert.config.hidden_size, n_classes)
-        self.sigmoid = nn.Sigmoid()
 
     def forward(self, input_ids, attention_mask):
         _, pooled_output = self.bert(
@@ -74,4 +77,4 @@ class ReviewClassifier(nn.Module):
             attention_mask=attention_mask
         )
         output = self.drop(pooled_output)
-        return self.sigmoid(self.out(output))
+        return self.out(output)

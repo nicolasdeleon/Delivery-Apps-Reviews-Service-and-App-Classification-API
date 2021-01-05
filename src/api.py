@@ -3,7 +3,7 @@ import os
 import flask
 from flask import Flask, request
 
-from models import BianryModelInterface, ReviewClassifier
+from models import ModelInterface, ReviewClassifier
 
 APP = Flask(__name__)
 
@@ -21,13 +21,12 @@ def predict():
 
 
 if __name__ == "__main__":
-    MODEL = BianryModelInterface(
+    MODEL = ModelInterface(
         model_bin=os.path.join(
-            os.path.abspath('models'), 'binary_service_model.bin'
+            os.path.abspath('models'), 'model.bin'
         ),
         device='cpu',
         tokenizer_state=os.path.abspath('tokenizer_state'),
-        cat='Service'
     )
     MODEL.model_ramp_up()
     APP.run(debug=True, host='0.0.0.0', port=5000)
