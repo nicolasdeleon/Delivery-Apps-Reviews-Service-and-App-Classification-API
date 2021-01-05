@@ -1,5 +1,11 @@
 # Base API for review classification
 
+Idea came from reviews: 
+
+[Pedidos Ya App Reviews](https://play.google.com/store/apps/details?id=com.pedidosya&hl=es_419&showAllReviews=true)
+
+
+
 ## Getting Started
 
 - Download model binary file from [link](https://drive.google.com/file/d/1jzTaBFqzEebsQFAQGlmYOg_j8QgouOCV/view?usp=sharing)
@@ -11,8 +17,6 @@
 - Entry point src/api
 
 ## Example
-
-http://localhost:5000/predict?review=El%20servicio%20muy%20lento.%20El%20celular%20por%20otro%20lado%20se%20traba%20todo%20el%20tiempo
 
 ```
 {
